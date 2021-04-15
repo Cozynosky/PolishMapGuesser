@@ -33,6 +33,7 @@ class Game:
         self.text_input.focus()
         self.toGuess = [Province(province) for province in settings._PROVINCES]
         self.Guessed = []
+        self.tries = 0
         self.gameOver = False
 
     def inputManage(self):
@@ -43,12 +44,16 @@ class Game:
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
                     if event.ui_element == self.text_input:
-                        self.checkGuess(self.text_input.get_text())
+                        self.checkGuess(self.text_input.get_text().lower())
                         self.text_input.set_text("")
+                        self.tries += 1
             self.manager.process_events(event)
     
     def draw(self):
         self.window.blit(settings._BGIMAGE,(0,0))
+        self.window.blit(settings._PROVINCESIMAGE,(0,0))
+        for guessed in self.Guessed:
+            self.window.blit(guessed.image,(0,0))
         self.manager.draw_ui(self.window)
     
     def checkGuess(self,guess):
@@ -57,8 +62,10 @@ class Game:
                 prov.image = settings._GUESSEDPROVINCESIMAGES[prov.name]
                 self.Guessed.append(prov)
                 self.toGuess.remove(prov)
+                if len(self.toGuess) == 0:
+                    pygame.time.wait(100)
+                    self.gameOver = True
 
 class Province:
     def __init__(self,name):
         self.name = name
-        self.image = settings._PROVINCESIMAGES[name]
