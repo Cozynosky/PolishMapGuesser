@@ -33,7 +33,6 @@ class Game:
         self.text_input.focus()
         self.toGuess = [Province(province) for province in settings._PROVINCES]
         self.Guessed = []
-        self.tries = 0
         self.gameOver = False
 
     def inputManage(self):
@@ -46,7 +45,6 @@ class Game:
                     if event.ui_element == self.text_input:
                         self.checkGuess(self.text_input.get_text().lower())
                         self.text_input.set_text("")
-                        self.tries += 1
             self.manager.process_events(event)
     
     def draw(self):
