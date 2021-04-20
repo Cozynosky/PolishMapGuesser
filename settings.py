@@ -10,10 +10,11 @@ _WINDOW_HEIGHT = 720
 
 # graphics
 _BGIMAGE = pygame.image.load("resources/background.png")
-_PROVINCESIMAGE = pygame.image.load("resources/toGuess.png",)
+_PROVINCESIMAGE = pygame.image.load("resources/toGuess.png")
+_CORRECTPROVINCESIMAGE = pygame.image.load("resources/CorrectMap.png")
 _GUESSEDPROVINCESIMAGES = {
     "dolnoslaskie": pygame.image.load("resources/dolnoslaskie.png"),
-    "kujawsko-pomorskie": pygame.image.load("resources/kujpom.png"),
+    "kujawskopomorskie": pygame.image.load("resources/kujpom.png"),
     "lubelskie": pygame.image.load("resources/lubelskie.png"),
     "lubuskie": pygame.image.load("resources/lubuskie.png"),
     "lodzkie": pygame.image.load("resources/lodzkie.png"),
@@ -25,7 +26,7 @@ _GUESSEDPROVINCESIMAGES = {
     "pomorskie": pygame.image.load("resources/pomorskie.png"),
     "slaskie": pygame.image.load("resources/slaskie.png"),
     "swietokrzyskie": pygame.image.load("resources/swietokrzyskie.png"),
-    "warminsko-mazurskie": pygame.image.load("resources/warmaz.png"),
+    "warminskomazurskie": pygame.image.load("resources/warmaz.png"),
     "wielkopolskie": pygame.image.load("resources/wielkopolskie.png"),
     "zachodniopomorskie": pygame.image.load("resources/zachpom.png"),
 }

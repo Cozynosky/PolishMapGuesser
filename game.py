@@ -20,12 +20,18 @@ class Game:
         self.newGame()
     
     def run(self):
-        while not self.gameOver:
-            time_delta = self.clock.tick(60) / 1000.0
-            self.draw()
-            self.inputManage()
-            self.manager.update(time_delta)
-            pygame.display.update()
+        while True: 
+            if not self.gameOver:
+                self.updateTime()
+                time_delta = self.clock.tick(60) / 1000.0
+                self.draw()
+                self.inputManage()
+                self.manager.update(time_delta)
+                pygame.display.update()
+            if self.gameOver:
+                self.draw()
+                self.inputManage()
+                pygame.display.update()
             self.clock.tick(60)
                 
     def newGame(self):
@@ -49,6 +55,10 @@ class Game:
                         self.checkGuess(self.text_input.get_text().lower().strip())
                         self.text_input.set_text("")
                         self.tries += 1
+            if event.type == KEYUP:
+                if event.key == K_RETURN and self.gameOver:
+                    self.gameOver = False
+                    self.newGame()
             self.manager.process_events(event)
     
     def draw(self):
@@ -58,8 +68,11 @@ class Game:
             self.window.blit(guessed.image,(0,0))
         self.showInfoBar()
         self.manager.draw_ui(self.window)
+        if self.gameOver:
+            self.drawGameOver()
     
     def checkGuess(self,guess):
+        guess = guess.replace("-","")
         for prov in self.toGuess:
             if prov.name == guess:
                 prov.image = settings._GUESSEDPROVINCESIMAGES[prov.name]
@@ -67,6 +80,7 @@ class Game:
                 self.toGuess.remove(prov)
                 if len(self.toGuess) == 0:
                     pygame.time.wait(100)
+                    self.text_input.unfocus()
                     self.gameOver = True
     
     def showInfoBar(self):
@@ -75,12 +89,21 @@ class Game:
         pygame.draw.rect(infoSur,(255,255,255),pygame.Rect(2,2,346,46))
         pygame.font.init()
         font = pygame.font.SysFont("Segoe UI",30)
-        minutes = str((pygame.time.get_ticks() - self.startTime)//1000//60).zfill(2)
-        seconds = str((pygame.time.get_ticks() - self.startTime)//1000%60).zfill(2)
-        text = font.render(f"Tries: {self.tries}    Time: {minutes}:{seconds}",True,(0,0,0))
+        text = font.render(f"Tries: {self.tries}    Time: {self.minutes}:{self.seconds}",True,(0,0,0))
         infoSur.blit(text,(6,2))
         self.window.blit(infoSur,(350,20))
-
+    
+    def drawGameOver(self):
+        self.window.blit(settings._CORRECTPROVINCESIMAGE,(0,0))
+        font = pygame.font.SysFont("Segoe UI",40)
+        text = font.render("Press -ENTER- to start a new game",True,(0,0,0))
+        textRect = text.get_rect()
+        textRect.center = self.window.get_rect().center
+        self.window.blit(text,textRect)
+      
+    def updateTime(self):
+        self.minutes = str((pygame.time.get_ticks() - self.startTime)//1000//60).zfill(2)
+        self.seconds = str((pygame.time.get_ticks() - self.startTime)//1000%60).zfill(2)
 class Province:
     def __init__(self,name):
         self.name = name
