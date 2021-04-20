@@ -55,7 +55,7 @@ class Game:
                         self.checkGuess(self.text_input.get_text().lower().strip())
                         self.text_input.set_text("")
                         self.tries += 1
-            if event.type == KEYUP:
+            if event.type == KEYDOWN:
                 if event.key == K_RETURN and self.gameOver:
                     self.gameOver = False
                     self.newGame()
@@ -79,7 +79,6 @@ class Game:
                 self.Guessed.append(prov)
                 self.toGuess.remove(prov)
                 if len(self.toGuess) == 0:
-                    pygame.time.wait(100)
                     self.text_input.unfocus()
                     self.gameOver = True
     
