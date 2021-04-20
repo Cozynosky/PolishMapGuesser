@@ -12,7 +12,7 @@ Just simply type something and press ENTER
 
 Screenshots
 ===========
-![GAme screen](resources\ss1.PNG)![EndGame](resources\ss2.PNG)
+![GAme screen](resources\ss1.png)![EndGame](resources\ss2.png)
 
 Technologies
 ===========
