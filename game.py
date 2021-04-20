@@ -26,6 +26,7 @@ class Game:
             self.inputManage()
             self.manager.update(time_delta)
             pygame.display.update()
+            self.clock.tick(60)
                 
     def newGame(self):
         self.clock = pygame.time.Clock()
@@ -34,6 +35,8 @@ class Game:
         self.toGuess = [Province(province) for province in settings._PROVINCES]
         self.Guessed = []
         self.gameOver = False
+        self.tries = 0
+        self.startTime = pygame.time.get_ticks()
 
     def inputManage(self):
         for event in pygame.event.get():
@@ -43,8 +46,9 @@ class Game:
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_TEXT_ENTRY_FINISHED:
                     if event.ui_element == self.text_input:
-                        self.checkGuess(self.text_input.get_text().lower())
+                        self.checkGuess(self.text_input.get_text().lower().strip())
                         self.text_input.set_text("")
+                        self.tries += 1
             self.manager.process_events(event)
     
     def draw(self):
@@ -52,6 +56,7 @@ class Game:
         self.window.blit(settings._PROVINCESIMAGE,(0,0))
         for guessed in self.Guessed:
             self.window.blit(guessed.image,(0,0))
+        self.showInfoBar()
         self.manager.draw_ui(self.window)
     
     def checkGuess(self,guess):
@@ -63,6 +68,18 @@ class Game:
                 if len(self.toGuess) == 0:
                     pygame.time.wait(100)
                     self.gameOver = True
+    
+    def showInfoBar(self):
+        infoSur = pygame.Surface((350,50))
+        infoSur.fill((0,0,0))
+        pygame.draw.rect(infoSur,(255,255,255),pygame.Rect(2,2,346,46))
+        pygame.font.init()
+        font = pygame.font.SysFont("Segoe UI",30)
+        minutes = str((pygame.time.get_ticks() - self.startTime)//1000//60).zfill(2)
+        seconds = str((pygame.time.get_ticks() - self.startTime)//1000%60).zfill(2)
+        text = font.render(f"Tries: {self.tries}    Time: {minutes}:{seconds}",True,(0,0,0))
+        infoSur.blit(text,(6,2))
+        self.window.blit(infoSur,(350,20))
 
 class Province:
     def __init__(self,name):
