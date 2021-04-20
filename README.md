@@ -12,7 +12,7 @@ Just simply type something and press ENTER
 
 Screenshots
 ===========
-![Gamescreen](resources/ss1.png)![EndGame](resources/ss2.png)
+![Gamescreen](https://github.com/Cozynosky/PolishMapGuesser/blob/master/resources/ss1.PNG?raw=true)![EndGame](https://github.com/Cozynosky/PolishMapGuesser/blob/master/resources/ss2.PNG?raw=true)
 
 Technologies
 ===========
